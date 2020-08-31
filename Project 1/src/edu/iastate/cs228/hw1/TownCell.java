@@ -37,21 +37,27 @@ public abstract class TownCell {
 	 *  
 	 * @param nCensus counts of all customers
 	 */
-	public void census(int nCensus[]) {
+	public void census(int[] nCensus) {
 		// zero the counts of all customers
 		nCensus[RESELLER] = 0; 
 		nCensus[EMPTY] = 0; 
 		nCensus[CASUAL] = 0; 
 		nCensus[OUTAGE] = 0; 
-		nCensus[STREAMER] = 0; 
+		nCensus[STREAMER] = 0;
 
 		//TODO: Write your code here.
+
+		for (int r = 0; r < row; r++) {
+			for (int c = 0; c < col; c++) {
+
+			}
+		}
 
 	}
 
 	/**
 	 * Gets the identity of the cell.
-	 * 
+	 *
 	 * @return State
 	 */
 	public abstract State who();

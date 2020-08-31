@@ -7,12 +7,14 @@ import java.util.Scanner;
 
 
 /**
- *  @author <<Write your name here>>
+ *  @author Wyatt Duberstein
  *
  */
 public class Town {
 	
 	private int length, width;  //Row and col (first and second indices)
+	private State state;
+
 	public TownCell[][] grid;
 	
 	/**
@@ -22,7 +24,8 @@ public class Town {
 	 * @param width
 	 */
 	public Town(int length, int width) {
-		//TODO: Write your code here.
+		this.length = length;
+		this.width = width;
 	}
 	
 	/**
@@ -33,7 +36,19 @@ public class Town {
 	 * @throws FileNotFoundException
 	 */
 	public Town(String inputFileName) throws FileNotFoundException {
-		//TODO: Write your code here.
+		File file = new File(inputFileName);
+		Scanner s = new Scanner(file);
+		int r = 0;
+		int c = 0;
+		while (s.hasNextLine()) {
+			while (s.hasNext()) {
+				c += 1;
+				if (c > width) {
+					width = c;
+				}
+			}
+			length += 1;
+		}
 	}
 	
 	/**
@@ -41,8 +56,7 @@ public class Town {
 	 * @return
 	 */
 	public int getWidth() {
-		//TODO: Write/update your code here.
-		return 0;
+		return width;
 	}
 	
 	/**
@@ -50,8 +64,7 @@ public class Town {
 	 * @return
 	 */
 	public int getLength() {
-		//TODO: Write/update your code here.
-		return 0;
+		return length;
 	}
 
 	/**
@@ -61,6 +74,7 @@ public class Town {
 	public void randomInit(int seed) {
 		Random rand = new Random(seed);
 		//TODO: Write your code here.
+
 	}
 	
 	/**
@@ -72,7 +86,29 @@ public class Town {
 	@Override
 	public String toString() {
 		String s = "";
-		//TODO: Write your code here.
+
+		for (int r = 0; r < length; r++) {
+			for (int c = 0; c < width; c++) {
+				state = grid[r][c].who();
+				switch (state) {
+					case EMPTY:
+						s += "E";
+						break;
+					case CASUAL:
+						s += "C";
+						break;
+					case OUTAGE:
+						s += "O";
+						break;
+					case RESELLER:
+						s += "R";
+						break;
+					case STREAMER:
+						s += "S";
+						break;
+				}
+			}
+		}
 		return s;
 	}
 }

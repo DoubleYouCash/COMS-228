@@ -2,7 +2,7 @@ package edu.iastate.cs228.hw1;
 
 /**
  * 
- * @author <<Write your name here>>
+ * @author Wyatt Duberstein
  *	Also provide appropriate comments for this class
  *
  */
@@ -33,7 +33,7 @@ public abstract class TownCell {
 	
 	/**
 	 * Censuses all cell types in the 3 X 3 neighborhood
-	 * Use who() method to get who is present in the 
+	 * Use who() method to get who is present in the neighborhood
 	 *  
 	 * @param nCensus counts of all customers
 	 */
@@ -44,12 +44,13 @@ public abstract class TownCell {
 		nCensus[CASUAL] = 0; 
 		nCensus[OUTAGE] = 0; 
 		nCensus[STREAMER] = 0;
+		int l = 0;
 
 		//TODO: Write your code here.
 
 		for (int r = 0; r < row; r++) {
 			for (int c = 0; c < col; c++) {
-
+				//nCensus[l] = ;
 			}
 		}
 

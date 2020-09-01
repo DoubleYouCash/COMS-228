@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
- * @author <<Write your name here>>
+ * @author Wyatt Duberstein
  *
  * The ISPBusiness class performs simulation over a grid 
  * plain with cells occupied by different TownCell types.
@@ -52,5 +52,24 @@ public class ISPBusiness {
 	 */
 	public static void main(String []args) {
 		//TODO: Write your code here.
+		Scanner s = new Scanner(System.in);
+		String str = "";
+
+		System.out.println("How to populate grid (type 1 or 2): 1: from a file. 2: randomly with seed");
+		str = s.next();
+		switch (str) {
+			case "1":
+				try {
+					System.out.println("Please enter file path:");
+					str = s.next();
+					Town t = new Town(str);
+				} catch (Exception e) {
+					System.out.println("File not found! Please try again.");
+				}
+			case "2":
+				
+		}
+
 	}
+
 }

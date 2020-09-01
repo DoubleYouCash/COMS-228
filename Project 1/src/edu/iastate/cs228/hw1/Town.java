@@ -2,8 +2,13 @@ package edu.iastate.cs228.hw1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.Array;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Stream;
+
+import static edu.iastate.cs228.hw1.State.*;
 
 
 /**
@@ -26,6 +31,7 @@ public class Town {
 	public Town(int length, int width) {
 		this.length = length;
 		this.width = width;
+		grid = new TownCell[this.length][this.width];
 	}
 	
 	/**
@@ -38,17 +44,40 @@ public class Town {
 	public Town(String inputFileName) throws FileNotFoundException {
 		File file = new File(inputFileName);
 		Scanner s = new Scanner(file);
-		int r = 0;
-		int c = 0;
-		while (s.hasNextLine()) {
-			while (s.hasNext()) {
-				c += 1;
+		char l = 'R';
+		int t = 0;
+		length = s.nextInt();
+		width = s.nextInt();
+		for (int r = 0; r < length - 1; r++) {
+			for (int c = 0; c < width; c++) {
+				l = s.next().charAt(c);
+				switch (l){
+					case 'R':
+						grid[length][c] = new Reseller(this, length, c);
+						break;
+					case 'E':
+						grid[length][c] = new Empty(this, length, c);
+						state = EMPTY;
+						break;
+					case 'O':
+						grid[length][c] = new Outage(this, length, c);
+						state = OUTAGE;
+						break;
+					case 'S':
+						grid[length][c] = new Outage(this, length, c);
+						state = STREAMER;
+						break;
+					case 'C':
+						grid[length][c] = new Casual(this, length, c);
+						state = CASUAL;
+				}
+
 				if (c > width) {
 					width = c;
 				}
 			}
-			length += 1;
 		}
+		s.close();
 	}
 	
 	/**
@@ -73,8 +102,29 @@ public class Town {
 	 */
 	public void randomInit(int seed) {
 		Random rand = new Random(seed);
-		//TODO: Write your code here.
-
+		int ra = 0;
+		for (int r = 0; r < length - 1; r++) {
+			for (int c = 0; c < width; c++) {
+				ra = rand.nextInt(4);
+				switch (ra) {
+					case 0:
+						grid[r][c] = new Reseller(this, r, c);
+						break;
+					case 1:
+						grid [r][c] = new Casual(this, r, c);
+						break;
+					case 2:
+						grid[r][c] = new Streamer(this, r, c);
+						break;
+					case 3:
+						grid[r][c] = new Outage(this, r, c);
+						break;
+					case 4:
+						grid[r][c] = new Empty(this, r, c);
+						break;
+				}
+			}
+		}
 	}
 	
 	/**
@@ -86,8 +136,7 @@ public class Town {
 	@Override
 	public String toString() {
 		String s = "";
-
-		for (int r = 0; r < length; r++) {
+		for (int r = 1; r < length; r++) {
 			for (int c = 0; c < width; c++) {
 				state = grid[r][c].who();
 				switch (state) {
@@ -107,8 +156,21 @@ public class Town {
 						s += "S";
 						break;
 				}
+				s += " ";
 			}
 		}
 		return s;
 	}
+
+	/**
+	 * A helper method that does the random calculation
+	 * @param rand
+	 * @return
+	 */
+	private int random(Random rand) {
+
+		return 0;
+	}
+
 }
+

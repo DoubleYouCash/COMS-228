@@ -6,6 +6,10 @@ import org.junit.*;
 
 import java.io.FileNotFoundException;
 
+/**
+ *  @author Wyatt Duberstein
+ *
+ */
 public class TownTest {
 
     private String s = "O R O R \n" +

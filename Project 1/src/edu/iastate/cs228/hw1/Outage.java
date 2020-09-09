@@ -1,5 +1,8 @@
 package edu.iastate.cs228.hw1;
 
+/**
+ * @author Wyatt Duberstein
+ */
 public class Outage extends TownCell {
 
     private int row;

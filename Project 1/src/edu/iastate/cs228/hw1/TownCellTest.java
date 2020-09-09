@@ -5,6 +5,10 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+/**
+ *  @author Wyatt Duberstein
+ *
+ */
 public class TownCellTest {
 
     private Town t = new Town(4, 4);

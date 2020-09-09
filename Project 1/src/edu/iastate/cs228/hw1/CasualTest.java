@@ -4,6 +4,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ *  @author Wyatt Duberstein
+ *
+ */
 public class CasualTest{
 
     Town t = new Town(4, 4);

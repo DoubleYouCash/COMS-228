@@ -48,32 +48,26 @@ public class Town {
 		int t = 0;
 		length = s.nextInt();
 		width = s.nextInt();
-		for (int r = 0; r < length - 1; r++) {
+		grid = new TownCell[this.length][this.width];
+		for (int r = 0; r < length; r++) {
 			for (int c = 0; c < width; c++) {
-				l = s.next().charAt(c);
+				l = s.next().charAt(0);
 				switch (l){
 					case 'R':
-						grid[length][c] = new Reseller(this, length, c);
+						grid[r][c] = new Reseller(this, r, c);
 						break;
 					case 'E':
-						grid[length][c] = new Empty(this, length, c);
-						state = EMPTY;
-						break;
-					case 'O':
-						grid[length][c] = new Outage(this, length, c);
-						state = OUTAGE;
-						break;
-					case 'S':
-						grid[length][c] = new Outage(this, length, c);
-						state = STREAMER;
+						grid[r][c] = new Empty(this, r, c);
 						break;
 					case 'C':
-						grid[length][c] = new Casual(this, length, c);
-						state = CASUAL;
-				}
-
-				if (c > width) {
-					width = c;
+						grid[r][c] = new Casual(this, r, c);
+						break;
+					case 'O':
+						grid[r][c] = new Outage(this, r, c);
+						break;
+					case 'S':
+						grid[r][c] = new Streamer(this, r, c);
+						break;
 				}
 			}
 		}
@@ -103,24 +97,24 @@ public class Town {
 	public void randomInit(int seed) {
 		Random rand = new Random(seed);
 		int ra = 0;
-		for (int r = 0; r < length - 1; r++) {
+		for (int r = 0; r < length; r++) {
 			for (int c = 0; c < width; c++) {
-				ra = rand.nextInt(4);
+				ra = rand.nextInt(5);
 				switch (ra) {
 					case 0:
 						grid[r][c] = new Reseller(this, r, c);
 						break;
 					case 1:
-						grid [r][c] = new Casual(this, r, c);
+						grid[r][c] = new Empty(this, r, c);
 						break;
 					case 2:
-						grid[r][c] = new Streamer(this, r, c);
+						grid[r][c] = new Casual(this, r, c);
 						break;
 					case 3:
 						grid[r][c] = new Outage(this, r, c);
 						break;
 					case 4:
-						grid[r][c] = new Empty(this, r, c);
+						grid[r][c] = new Streamer(this, r, c);
 						break;
 				}
 			}
@@ -136,10 +130,9 @@ public class Town {
 	@Override
 	public String toString() {
 		String s = "";
-		for (int r = 1; r < length; r++) {
+		for (int r = 0; r < length; r++) {
 			for (int c = 0; c < width; c++) {
-				state = grid[r][c].who();
-				switch (state) {
+				switch (this.grid[r][c].who()) {
 					case EMPTY:
 						s += "E";
 						break;
@@ -158,19 +151,11 @@ public class Town {
 				}
 				s += " ";
 			}
+			s += "\n";
 		}
 		return s;
 	}
 
-	/**
-	 * A helper method that does the random calculation
-	 * @param rand
-	 * @return
-	 */
-	private int random(Random rand) {
-
-		return 0;
-	}
 
 }
 

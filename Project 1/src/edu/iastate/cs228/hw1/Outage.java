@@ -2,8 +2,13 @@ package edu.iastate.cs228.hw1;
 
 public class Outage extends TownCell {
 
+    private int row;
+    private int col;
+
     public Outage(Town p, int r, int c) {
         super(p, r, c);
+        row = r;
+        col = c;
     }
 
     /**
@@ -24,6 +29,6 @@ public class Outage extends TownCell {
      */
     @Override
     public TownCell next(Town tNew) {
-        return null;
+        return new Empty(tNew, row, col);
     }
 }

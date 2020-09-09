@@ -39,21 +39,55 @@ public abstract class TownCell {
 	 */
 	public void census(int[] nCensus) {
 		// zero the counts of all customers
-		nCensus[RESELLER] = 0; 
-		nCensus[EMPTY] = 0; 
-		nCensus[CASUAL] = 0; 
-		nCensus[OUTAGE] = 0; 
+		nCensus[RESELLER] = 0;
+		nCensus[EMPTY] = 0;
+		nCensus[CASUAL] = 0;
+		nCensus[OUTAGE] = 0;
 		nCensus[STREAMER] = 0;
 		int l = 0;
 
-		//TODO: Write your code here.
+		TownCell[][] grid = new TownCell[plain.getLength()][plain.getWidth()];
 
-		for (int r = 0; r < row; r++) {
-			for (int c = 0; c < col; c++) {
-				//nCensus[l] = ;
+			for (int r = -1; r < 2; r++) {
+				for (int c = -1; c < 2; c++) {
+					try {
+					switch (plain.grid[row + r][col + c].who()) {
+						case RESELLER:
+							if ((row + r) == 0 && (col + c) == 0) {
+								break;
+							}
+							nCensus[RESELLER] += 1;
+							break;
+						case EMPTY:
+							if ((row + r) == 0 && (col + c) == 0) {
+								break;
+							}
+							nCensus[EMPTY] += 1;
+							break;
+						case CASUAL:
+							if ((row + r) == 0 && (col + c) == 0) {
+								break;
+							}
+							nCensus[CASUAL] += 1;
+							break;
+						case OUTAGE:
+							if ((row + r) == 0 && (col + c) == 0) {
+								break;
+							}
+							nCensus[OUTAGE] += 1;
+							break;
+						case STREAMER:
+							if ((row + r) == 0 && (col + c) == 0) {
+								break;
+							}
+							nCensus[STREAMER] += 1;
+							break;
+					}
+				} catch (Exception e) {
+						continue;
+					}
 			}
 		}
-
 	}
 
 	/**

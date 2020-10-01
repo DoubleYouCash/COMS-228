@@ -2,7 +2,7 @@ package edu.iastate.cs228.hw2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -16,8 +16,7 @@ public class Alphabet {
    * A lookup table containing characters and their positions.
    * Sorted by the character of each entry.
    */
-  private CharAndPos[] lookup;
-  private Scanner sc;
+  private final CharAndPos[] lookup;
 
 
   /**
@@ -57,30 +56,24 @@ public class Alphabet {
    *   if the file cannot be found
    */
   public Alphabet(String filename) throws NullPointerException, FileNotFoundException {
-    int length = 0;
+
     File file = new File(filename);
+    Scanner scanner = new Scanner(file);
 
-    sc = new Scanner(file);
-    Scanner lengthScan = new Scanner(file);
-    int k = 0;
+    ArrayList<String> lookup = new ArrayList<>();
 
-    /* Look for the amount of chars to determine the length of the CharAndPos array */
-    while (lengthScan.hasNext()) {
-      length += 1;
-      lengthScan.next();
-    }
-    lookup = new CharAndPos[length]; // Set the length of the array with the length of the file contents
-
-    /* Do the actual assignment of the chars and positions from the file to the local array */
-    while (sc.hasNext()) {
-      lookup[k] = new CharAndPos(sc.next().charAt(0), k);
-      k += 1;
+    while (scanner.hasNextLine()) {
+      lookup.add(scanner.nextLine());
     }
 
-    /* Sort the lookup array by character */
-    sortAlphabet(lookup);
+    this.lookup = new CharAndPos[lookup.size()];
+    for (int i = 0; i < lookup.size(); i++) {
+      this.lookup[i] = new CharAndPos(lookup.get(i).charAt(0), i);
+    }
 
-    sc.close(); // Close the Scanner once finished
+    sortAlphabet(this.lookup);
+
+    scanner.close(); // Close the Scanner once finished
   }
 
 
@@ -94,8 +87,12 @@ public class Alphabet {
    *   true if and only if the given character is present in the ordering
    */
   public boolean isValid(char c){
-    int index = binarySearch(c); // Use the binary search method to see if the character is in the alphabet
-    return index != -1; // Return true if the character is in the alphabet, or false if it isn't. -1 means that it's not.
+    for (CharAndPos charAndPos : lookup) {
+      if (charAndPos.character == c) {
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -119,7 +116,6 @@ public class Alphabet {
     }
 
     return lookup[index].position; // chat is within the alphabet, return the index of the ordering.
-
   }
 
   /**
@@ -144,7 +140,6 @@ public class Alphabet {
     int first = 0;
     int middle = lookup.length / 2;
     int last = lookup.length;
-    char found;
 
     while (first <= last) {
       char c = lookup[middle].character;
@@ -157,12 +152,13 @@ public class Alphabet {
       }
       middle = (first + last) / 2;
     }
-    // TODO
     return -1;
   }
 
   /**
    * Helper method to sort the Alphabet into ASCII order
+   * I implemented bubble sort here rather than using Arrays.sort()
+   * to compare the sorting times,
    * @param lookup
    * the array to sort
    */
@@ -179,24 +175,6 @@ public class Alphabet {
       }
     }
   }
-
-  //Main method used for alphabet testing purposes
-
-  /*public static void main(String[] args) {
-
-    Alphabet a = null;
-
-    try {
-      a = new Alphabet("10.alphabet.txt");
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    }
-
-    System.out.println("Position in the ASCII Order: " + a.binarySearch(','));
-    System.out.println("Position in the alphabet: " + a.getPosition(','));
-
-  }
-   */
 
   /**
    * A PODT class containing a character and a position.

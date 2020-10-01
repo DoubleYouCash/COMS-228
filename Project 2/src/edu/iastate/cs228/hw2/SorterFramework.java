@@ -1,12 +1,10 @@
 package edu.iastate.cs228.hw2;
 
-
-
-import javax.swing.plaf.InsetsUIResource;
-import java.awt.*;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Comparator;
-
 
 /**
  * An class that compares various methods of sorting.
@@ -29,6 +27,11 @@ public class SorterFramework {
    *      other file
    */
   public static void main(String[] args) {
+
+    if (args.length < 2) {
+      System.out.println("Not enough arguments!");
+      return;
+    }
 
     Alphabet alphabet = null;
     try {
@@ -53,7 +56,7 @@ public class SorterFramework {
 
     SorterFramework toRun;
     if (words != null) {
-      toRun = new SorterFramework(sorters, comparator, words, words.length());
+      toRun = new SorterFramework(sorters, comparator, words, 1000000);
     } else {
       throw new NullPointerException();
     }
@@ -71,7 +74,7 @@ public class SorterFramework {
   /**
    * The words to sort.
    */
-  private final WordList words;
+  private WordList words;
 
   /**
    * The array of sorters to use for sorting.
@@ -144,26 +147,28 @@ public class SorterFramework {
 
     for (Sorter sorter : this.sorters) {
 
-      long wordsSorted = 0;
-      long runtime = 0;
-      long comparisons = 0;
-      long iterations = 0;
+      WordList temp = words.clone();
+
+      long wordsSorted;
+      double runtime;
+      long comparisons;
 
       sorter.sortWithStatistics(words, comparator, totalToSort);
 
       wordsSorted = sorter.getTotalWordsSorted();
       runtime = sorter.getTotalSortingTime();
       comparisons = sorter.getTotalComparisons();
-      iterations = sorter.iterations;
 
       System.out.println("Sorter Name: " + sorter.getName());
-      System.out.println("Length of the Word List: " + totalToSort);
+      System.out.println("Length of the Word List: " + words.length());
       System.out.println("Total Words Sorted: " + wordsSorted);
-      System.out.println("Time Taken to Sort: " + runtime / 1000 + "s");
-      System.out.println("Average Time to Sort: " + runtime / iterations + "ms");
-      System.out.println("Elements Sorted per Second: " + wordsSorted / (runtime / 1000));
-      System.out.println("Total Comparisons Performed" + comparisons);
+      System.out.println("Time Taken to Sort: " + runtime);
+      System.out.println("Average Time to Sort: " + runtime / (totalToSort / words.length()));
+      System.out.println("Elements Sorted per Second: " + wordsSorted / (runtime / 1000.00));
+      System.out.println("Total Comparisons Performed: " + comparisons);
       System.out.println();
+
+      words = temp.clone();
 
     }
 

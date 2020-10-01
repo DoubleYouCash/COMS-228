@@ -1,8 +1,9 @@
 package edu.iastate.cs228.hw2;
 
-
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Comparator;
-
 
 /**
  * An abstract class representing an object that can sort {@link WordList}s
@@ -31,13 +32,6 @@ public abstract class Sorter {
    * sortWithStatistics()}, and retrieved from {@link #getTotalComparisons()}.
    */
   private long totalComparisons;
-
-  /**
-   * The total number of iterations undertaken in the
-   * {@link #sortWithStatistics(WordList, Comparator, int)} method, in order to
-   * calculate the average in the run() method in SorterFramework
-   */
-  public long iterations;
 
 
   /**
@@ -91,25 +85,41 @@ public abstract class Sorter {
    *   if {@code totalToSort} is negative
    */
   public void sortWithStatistics(WordList toSort, Comparator<String> comp, int totalToSort) throws NullPointerException, IllegalArgumentException{
-    iterations = 0;
 
     while (totalWordsSorted < totalToSort) {
 
       CountingComparator<String> countingComparator = new CountingComparator<>(comp);
-      long begin = 0;
-      long end = 0;
+      long begin;
+      long end;
 
       WordList newList = toSort.clone();
 
+      /* Measure the time taken per iteration, and run 1 iteration of the sort() method */
       begin = System.currentTimeMillis();
       this.sort(newList, countingComparator);
       end = System.currentTimeMillis();
 
+      /* Write the sorted array to the new array */
+      for (int i = 0; i < toSort.length(); i++) {
+        toSort.set(i, newList.get(i));
+      }
+
+      /* Update Statistics */
       totalComparisons += countingComparator.getCount();
       totalWordsSorted += toSort.length();
-      totalSortingTime += (end- begin);
-      iterations++;
+      totalSortingTime += (end - begin);
+    }
 
+    /* File Writer Stuff */
+    File file = new File(getClass().getSimpleName() + ".txt"); // Creates the output file
+    try {
+      FileWriter fw = new FileWriter(file);
+      for (int i = 0; i < toSort.length(); i++) {
+        fw.write(toSort.getArray()[i] + "\n");
+      }
+      fw.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
   }
@@ -175,7 +185,7 @@ public abstract class Sorter {
     /**
      * The comparator used to perform comparisons.
      */
-    private Comparator<? super T>  wrapped;
+    private final Comparator<? super T>  wrapped;
 
     /**
      * The number of comparisons performed.

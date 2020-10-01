@@ -1,9 +1,6 @@
 package edu.iastate.cs228.hw2;
 
-
-import java.beans.IndexedPropertyChangeEvent;
 import java.util.Comparator;
-
 
 /**
  * A string comparator that uses an ordering of an {@link Alphabet} to
@@ -15,7 +12,7 @@ public class AlphabetComparator implements Comparator<String> {
   /**
    * The ordering used to compare characters.
    */
-  private Alphabet alphabet;
+  private final Alphabet alphabet;
 
 
   /**
@@ -62,41 +59,35 @@ public class AlphabetComparator implements Comparator<String> {
   @Override
   public int compare(String a, String b) throws NullPointerException, IllegalArgumentException {
 
-    int aCount = 0;
-    int bCount = 0;
-
     if (a.equals(b)) {
       return 0;
     }
 
     if (a.length() > b.length() || a.length() == b.length()) {
-      for (int i = 0; i < a.length(); i++) {
-        if (!alphabet.isValid(a.charAt(i)) || !alphabet.isValid(b.charAt(i))) { // Check if one of the characters from either given string is invalid
-          throw new IllegalArgumentException();
-        }
-        if (alphabet.getPosition(a.charAt(i)) > alphabet.getPosition(b.charAt(i))) {
-          aCount++;
-        } else if (alphabet.getPosition(a.charAt(i)) > alphabet.getPosition(b.charAt(i))) {
-          bCount++;
-        }
-      }
-    } else {
       for (int i = 0; i < b.length(); i++) {
         if (!alphabet.isValid(a.charAt(i)) || !alphabet.isValid(b.charAt(i))) {
           throw new IllegalArgumentException();
         }
         if (alphabet.getPosition(a.charAt(i)) > alphabet.getPosition(b.charAt(i))) {
-          aCount++;
-        } else if (alphabet.getPosition(a.charAt(i)) > alphabet.getPosition(b.charAt(i))) {
-          bCount++;
+          return 1;
+        } else if (alphabet.getPosition(a.charAt(i)) < alphabet.getPosition(b.charAt(i))) {
+          return -1;
+        }
+      }
+    } else {
+      for (int i = 0; i < a.length(); i++) {
+        if (!alphabet.isValid(a.charAt(i)) || !alphabet.isValid(b.charAt(i))) {
+          throw new IllegalArgumentException();
+        }
+        if (alphabet.getPosition(a.charAt(i)) > alphabet.getPosition(b.charAt(i))) {
+          return 1;
+        } else if (alphabet.getPosition(a.charAt(i)) < alphabet.getPosition(b.charAt(i))) {
+          return -1;
         }
       }
     }
 
-    if (aCount == 0 || bCount == 0) {
-      return Integer.compare(a.length(), b.length());
-    }
+    return 0;
 
-    return aCount - bCount;
   }
 }

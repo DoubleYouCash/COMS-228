@@ -3,6 +3,7 @@ package edu.iastate.cs228.hw2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -46,22 +47,21 @@ public class WordList implements Cloneable {
    */
   public WordList(String filename) throws NullPointerException, FileNotFoundException {
 
-    int length = 0;
-    int i = 0;
-    Scanner sc = new Scanner(new File(filename));
+    File file = new File(filename);
+    Scanner scanner = new Scanner(file);
 
-    /* First determine the amount of individual words in the document to set the array's length */
-    while (sc.hasNext()) {
-      length += 1;
+    ArrayList<String> words = new ArrayList<>();
+
+    while (scanner.hasNextLine()) {
+      words.add(scanner.nextLine());
     }
 
-    /* Now determine the contents of the file, starting from the beginning and adding them to the String array */
-    words = new String[length];
-    sc.reset();
-    while (sc.hasNext()) {
-      words[i] = sc.next();
-      i += 1;
+    this.words = new String[words.size()];
+    for (int i = 0; i < this.words.length; i++) {
+      this.words[i] = words.get(i);
     }
+
+    scanner.close(); // Close the Scanner once finished
 
   }
 
@@ -137,6 +137,7 @@ public class WordList implements Cloneable {
   /**
    * Performs a deep copy of the list.
    */
+
   @Override
   public WordList clone() {
 

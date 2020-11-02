@@ -819,6 +819,30 @@ public class StoutList<E extends Comparable<? super E>> extends AbstractSequenti
 
   }
 
+  public static void main(String[] args) {
+
+      StoutList<String> list = new StoutList<String>(4);
+      list.add("A");
+      list.add("B");
+      list.add("C");
+      list.add("D");
+
+      ListIterator<String> iter = list.listIterator(1);
+
+      iter = list.listIterator();
+      iter.next();
+      iter.next();
+      iter.add("P");
+      iter.previous();
+      iter.add("Q");
+      iter.next();
+      iter.remove();
+      System.out.println(iter.nextIndex());
+
+      System.out.println(list.toStringInternal(iter));
+
+  }
+
   /* Used for Testing */
   /*public static void main(String[] args) {
       StoutList<Integer> list = new StoutList<Integer>(4);

@@ -17,8 +17,7 @@ import java.util.Scanner;
  *
  * @author Jeremy Sheaffer, Mike Petersen
  */
-public class PerfectHashGenerator
-{
+public class PerfectHashGenerator {
   /**
    * The number of rows in the T1 and T2 tables.
    * Enough to fit most English words.
@@ -33,8 +32,7 @@ public class PerfectHashGenerator
 
 
   public static void main(String[] args) {
-    if (null == args || 1 > args.length || 3 < args.length)
-    {
+    if (null == args || 1 > args.length || 3 < args.length) {
       System.err.println("Usage: <word list> [prefix] [seed]");
 
       System.exit(1);
@@ -160,9 +158,7 @@ public class PerfectHashGenerator
    * @throws IllegalArgumentException
    *   if the modulus is not positive
    */
-  private
-  Graph
-  mapping(int[][] table1, int[][] table2, int modulus, Random rng, List<String> words) throws IllegalArgumentException {
+  private Graph mapping(int[][] table1, int[][] table2, int modulus, Random rng, List<String> words) throws IllegalArgumentException {
     Graph toRet;
 
     do {
@@ -194,7 +190,6 @@ public class PerfectHashGenerator
     
     } while (toRet.hasCycle());
 
-
     return toRet;
   }
 
@@ -216,10 +211,7 @@ public class PerfectHashGenerator
     while (fileScan.hasNextLine()) {
       toRet.add(fileScan.nextLine());
     }
-
     fileScan.close();
-
-
     return toRet;
   }
 }

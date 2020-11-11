@@ -1,14 +1,12 @@
 package edu.iastate.cs228.hw5;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
-
 
 /**
  * A graph used to generate a perfect hash table.
  *
- * @author
+ * @author Wyatt Duberstein
  */
 public class Graph {
   /**
@@ -89,14 +87,27 @@ public class Graph {
    *   if {@code word} is {@code null}
    */
   public void addEdge(int fromIdx, int toIdx, int index, String word) throws IndexOutOfBoundsException, NullPointerException {
-    // TODO
+    if (word == null) {
+      throw new NullPointerException();
+    }
+
+    Vertex start = vertices[fromIdx];
+    Vertex end = vertices[toIdx];
+
+    Edge add1 = new GraphEdge(index, word, start, end);
+    Edge add2 = new GraphEdge(index, word, end, start);
+
+    start.edges().add(add1);
+    end.edges().add(add2);
   }
 
   /**
    * Marks all vertices and edges within the graph as unvisited.
    */
   public void unvisitAll() {
-    // TODO
+    for (Vertex v : vertices) {
+      v.setVisited(false);
+    }
   }
 
   /**
@@ -130,7 +141,13 @@ public class Graph {
    *   whether this graph contains a cycle
    */
   public boolean hasCycle() {
-    // TODO
+    unvisitAll();
+    for (Vertex v : vertices) {
+      if (!v.isVisited() && v.hasCycle(null)) {
+        return true;
+      }
+    }
+
     return false;
   }
 
@@ -196,11 +213,12 @@ public class Graph {
 
     @Override
     public void setVisited(boolean visited) {
-      // TODO
-
-      /*
-       * Don't forget to handle the special false case.
-       */
+      this.visited = visited;
+      if (!visited) {
+        for (Edge edge : edges) {
+          edge.unvisit();
+        }
+      }
     }
 
     @Override
@@ -243,7 +261,18 @@ public class Graph {
 
     @Override
     public boolean hasCycle(Vertex from) {
-      // TODO
+      if (isVisited()) {
+        return true;
+      } else {
+        setVisited(true);
+      }
+      for (Edge e : edges) {
+        if (e.getTo() != from) {
+          if (e.getTo().hasCycle(this)) {
+            return true;
+          }
+        }
+      }
       return false;
     }
 
@@ -347,7 +376,7 @@ public class Graph {
            .append(getTo().index())
            .append("]");
 
-
+      
       return build.toString();
     }
   }

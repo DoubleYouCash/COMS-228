@@ -1,15 +1,13 @@
 package edu.iastate.cs228.hw5;
 
-
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
 
-
 /**
  * A class that generates Java code for the perfect hash table implementation.
  *
- * @author
+ * @author Wyatt Duberstein
  */
 public class CodeGenerator {
   /**
@@ -211,6 +209,7 @@ public class CodeGenerator {
    */
   private void begin(PrintStream ps, String access, String className) {
     // TODO
+    ps.println(access + " class " + className + "{");
   }
 
   /**
@@ -227,6 +226,15 @@ public class CodeGenerator {
    */
   private void array(PrintStream ps, String[] data, String access, String varName) {
     // TODO
+    ps.println(access + " String[] " + varName + " = " + "{");
+    for (int i = 0; i < data.length; i++) {
+      if (i == data.length - 1) {
+        ps.println("\"" + data[i] + "\"");
+      } else {
+        ps.println("\"" + data[i] + "\"" + ",");
+      }
+    }
+    ps.print("};");
   }
 
   /**
@@ -243,6 +251,15 @@ public class CodeGenerator {
    */
   private void array(PrintStream ps, int[] data, String access, String varName) {
     // TODO
+    ps.println(access + " int[] " + varName + " = " + "{");
+    for (int i = 0; i < data.length; i++) {
+      if (i < data.length - 1) {
+        ps.print(data[i] + ", ");
+      } else {
+        ps.print(data[i]);
+      }
+    }
+    ps.print("};");
   }
 
   /**
@@ -258,7 +275,27 @@ public class CodeGenerator {
    *   the variable name for the array
    */
   private void table(PrintStream ps, int[][] data, String access, String varName) {
-    // TODO
+    ps.print(access + " " + "int[][] " + varName + " = " + "{ \n  \n");
+    int table;
+    int first;
+    for (int i = 0; i < 8; i++) {
+      table = 0;
+      first = 0;
+      for (int j = 0; j < 64; j++) {
+        if (first == 0) {
+          ps.print("{" + "\n" + data[i][j]);
+          first = 1;
+        } else if (table != 8) {
+          ps.print("," + " " + data[i][j]);
+          table++;
+        } else {
+          ps.print("\n," + data[i][j]);
+          table = 0;
+        }
+      }
+      ps.print("\n" + "}," + "\n");
+    }
+    ps.print("};" + "\n");
   }
 
   /**
@@ -394,7 +431,7 @@ public class CodeGenerator {
    *   the stream to print to
    */
   private void end(PrintStream ps) {
-    // TODO
+    ps.println("\n" + "}");
   }
 
   /**
